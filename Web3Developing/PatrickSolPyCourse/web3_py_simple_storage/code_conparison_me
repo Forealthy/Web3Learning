@@ -1,0 +1,13 @@
+greeting_transaction = simple_storage.functions.store(15).buildTransaction(
+    {
+        "chainId": chain_id,
+        "gasPrice": w3.eth.gas_price,
+        "from": my_address,
+        "nonce": nonce+1,
+    }
+)
+signed_greeting_txn = w3.eth.sign_transaction(greeting_transaction, private_key = private_key)
+txn_greeting_hash = w3.eth.send_raw_transaction(signed_greeting_txn.rawTransaction)
+print("updating stored value ...")
+txn_receipt = w3.eth.wait_for_transaction_receipt(txn_greeting_hash)
+print(simple_storage.functions.retrieve().call())
